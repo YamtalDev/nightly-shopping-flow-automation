@@ -1,0 +1,29 @@
+{
+  "name": "nightly-shopping-flow-automation",
+  "version": "1.0.0",
+  "description": "Nightly end-to-end test suite for an online shopping system using TypeScript, Node.js, and Playwright. It automates flows like login, adding products, checkout, and order verification. A GitHub Actions pipeline ensures daily execution, with identified bugs and test cases included.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YamtalDev/nightly-shopping-flow-automation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YamtalDev/nightly-shopping-flow-automation/issues"
+  },
+  "homepage": "https://github.com/YamtalDev/nightly-shopping-flow-automation#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^22.9.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
