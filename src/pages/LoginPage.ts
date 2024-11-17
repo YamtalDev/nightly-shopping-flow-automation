@@ -33,7 +33,9 @@ export class LoginPage {
       await this.page.fill(LOGIN_SELECTORS.emailInput, email);
       await this.page.fill(LOGIN_SELECTORS.passwordInput, password);
       const signInButton = this.page.locator(LOGIN_SELECTORS.signInButton);
-      await clickElementWhenReady(signInButton);
+      await expect(signInButton).toBeVisible();
+      await expect(signInButton).toBeEnabled();
+      await signInButton.press('Enter');
     } catch (error) {
       throw new Error(`Login failed for email: ${email}. ${error}`);
     }
