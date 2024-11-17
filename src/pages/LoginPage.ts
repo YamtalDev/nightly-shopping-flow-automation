@@ -42,32 +42,58 @@ export class LoginPage {
   /**
    * @method Checks for invalid email format warning.
    * @param email - The invalid email to test.
+   * @throws Will throw an error if the email validation check fails.
    */
   async checkInvalidEmailWarning(email: string): Promise<void> {
-    await this.page.fill(LOGIN_SELECTORS.emailInput, email);
-    const isInvalidEmail = await this.page.locator(LOGIN_SELECTORS.emailInput).evaluate(
-      (input) => input.validity.valid === false
-    );
-    expect(isInvalidEmail).toBe(true);
+    try {
+      await this.page.fill(LOGIN_SELECTORS.emailInput, email);
+      const isInvalidEmail = await this.page.locator(LOGIN_SELECTORS.emailInput).evaluate(
+        (input) => (input as HTMLInputElement).validity.valid === false
+      );
+      expect(isInvalidEmail).toBe(true);
+    } catch (error) {
+      throw new Error(`Invalid email warning check failed for email "${email}". ${error}`);
+    }
   }
 
   /**
    * @method Verifies the "Incorrect username or password" error message is displayed.
+   * @throws Will throw an error if the error message is not displayed.
    */
   async checkInvalidCredentialsError(): Promise<void> {
-    await this.page.waitForSelector(LOGIN_SELECTORS.invalidCredentialsError, { timeout: 10000 });
-    const errorMessage = await this.page.locator(LOGIN_SELECTORS.invalidCredentialsError).textContent();
-    expect(errorMessage).toContain('Incorrect username or password');
+    try {
+      await this.page.waitForSelector(LOGIN_SELECTORS.invalidCredentialsError, { timeout: 10000 });
+      const errorMessage = await this.page.locator(LOGIN_SELECTORS.invalidCredentialsError).textContent();
+      expect(errorMessage).toContain('Incorrect username or password');
+    } catch (error) {
+      throw new Error(`Invalid credentials error message not displayed. ${error}`);
+    }
   }
 
-  async checkPasswordAttemptsExceededError() {
-    await this.page.waitForSelector('text=Password attempts exceeded', { timeout: 10000 });
-    const errorMessage = await this.page.locator('text=Password attempts exceeded').textContent();
-    expect(errorMessage).toContain('Password attempts exceeded');
+  /**
+   * @method Verifies the "Password attempts exceeded" error message is displayed after multiple failed login attempts.
+   * @throws Will throw an error if the error message is not displayed.
+   */
+  async checkPasswordAttemptsExceededError(): Promise<void> {
+    try {
+      await this.page.waitForSelector(LOGIN_SELECTORS.passwordAttemptsExceededError, { timeout: 10000 });
+      const errorMessage = await this.page.locator(LOGIN_SELECTORS.passwordAttemptsExceededError).textContent();
+      expect(errorMessage).toContain('Password attempts exceeded');
+    } catch (error) {
+      throw new Error(`Password attempts exceeded error message not displayed. ${error}`);
+    }
   }
 
-  async verifySuccessfulLogin() {
-    await this.page.waitForSelector('text=Sign out', { timeout: 10000 });
-    await expect(this.page.locator('text=Sign out')).toBeVisible();
+  /**
+   * @method Verifies that the user has successfully logged in by checking for the presence of the "Sign out" option.
+   * @throws Will throw an error if the "Sign out" option is not visible.
+   */
+  async verifySuccessfulLogin(): Promise<void> {
+    try {
+      await this.page.waitForSelector('text=Sign out', { timeout: 10000 });
+      await expect(this.page.locator('text=Sign out')).toBeVisible();
+    } catch (error) {
+      throw new Error(`Successful login verification failed. ${error}`);
+    }
   }
 }
