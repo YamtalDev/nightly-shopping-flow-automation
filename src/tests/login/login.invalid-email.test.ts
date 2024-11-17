@@ -1,10 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../pages/LoginPage';
+import { expect } from '@playwright/test';
+import test from '../../fixtures/loginFixture';
 
 test.describe('Invalid Email Login Test', () => {
-  test('Cannot log in with invalid email format', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    await loginPage.navigate();
+  test('Cannot log in with invalid email format', async ({ loginPage, page }) => {
     await loginPage.checkInvalidEmailWarning('invalid-email');
     await expect(page.locator('text=Sign out')).not.toBeVisible();
   });

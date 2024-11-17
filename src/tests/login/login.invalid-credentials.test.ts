@@ -1,12 +1,10 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../pages/LoginPage';
+import test from '../../fixtures/loginFixture';
+import { expect } from '@playwright/test';
+import { testUsers } from '../../utils/data/testData';
 
-test.describe.serial('Invalid Credentials Login Test', () => {
-  test('Cannot log in with invalid credentials', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    await loginPage.navigate();
-    const uniqueEmail = `${Date.now()}@example.com`;
-    await loginPage.login(uniqueEmail, 'wrongPassword');
+test.describe('Invalid Credentials Login Test', () => {
+  test('Cannot log in with invalid credentials', async ({ loginPage, page }) => {
+    await loginPage.login(testUsers.invalidUser.email,testUsers.invalidUser.password);
     await loginPage.checkInvalidCredentialsError();
     await expect(page.locator('text=Sign out')).not.toBeVisible();
   });
