@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import test from '../../fixtures/loginFixture';
-import { environment } from '../../config/environment.';
+import { environment } from '../../config/environment';
 import { testUsers } from '../../utils/data/testData';
 
 test.describe('Valid Login Test', () => {

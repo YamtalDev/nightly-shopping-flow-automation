@@ -50,7 +50,7 @@ const config: PlaywrightTestConfig = {
     ['html', { open: 'never' }],
   ],
   retries: 1,
-  workers: process.env.CI ? 2 : undefined,
+  workers: process.env.CI ? 2 : 8,
 };
 
 export default config;

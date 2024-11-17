@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { environment } from '../config/environment.';
+import { environment } from '../config/environment';
 import { LOGIN_SELECTORS } from '../config/selectors/LoginSelectors';
 import { clickElementWhenReady } from '../utils/actions/clickElementWhenReady';
 
@@ -9,39 +9,54 @@ import { clickElementWhenReady } from '../utils/actions/clickElementWhenReady';
 export class LoginPage {
   constructor(public page: Page) {}
 
-  async navigate() {
+  /**
+   * @method Navigates to the login page.
+   * @throws Will throw an error if navigation fails.
+   */
+  async navigate(): Promise<void> {
     try {
       await this.page.goto(environment.BASE_URL, { waitUntil: 'networkidle' });
       await this.page.waitForSelector(LOGIN_SELECTORS.emailInput, { timeout: 10000 });
     } catch (error) {
-      throw new Error(`Navigation to ${environment.BASE_URL} failed. Error: ${error}`);
+      throw new Error(`Navigation to ${environment.BASE_URL} failed. ${error}`);
     }
   }
 
-  async login(email: string, password: string) {
+  /**
+   * @method Logs in with the provided email and password.
+   * @param email - The user's email address.
+   * @param password - The user's password.
+   * @throws Will throw an error if login fails.
+   */
+  async login(email: string, password: string): Promise<void> {
     try {
       await this.page.fill(LOGIN_SELECTORS.emailInput, email);
       await this.page.fill(LOGIN_SELECTORS.passwordInput, password);
-      const signInButton = this.page.getByRole('button', { name: 'Sign in' });
-      await signInButton.waitFor({ state: 'visible', timeout: 10000 });
-      await expect(signInButton).toBeEnabled({ timeout: 10000 });
+      const signInButton = this.page.locator(LOGIN_SELECTORS.signInButton);
       await clickElementWhenReady(signInButton);
     } catch (error) {
-      throw new Error(`Login failed for email: ${email}. Error: ${error}`);
+      throw new Error(`Login failed for email: ${email}. ${error}`);
     }
   }
 
-  async checkInvalidEmailWarning(email: string) {
+  /**
+   * @method Checks for invalid email format warning.
+   * @param email - The invalid email to test.
+   */
+  async checkInvalidEmailWarning(email: string): Promise<void> {
     await this.page.fill(LOGIN_SELECTORS.emailInput, email);
     const isInvalidEmail = await this.page.locator(LOGIN_SELECTORS.emailInput).evaluate(
-      (input) => input.matches(':invalid')
+      (input) => input.validity.valid === false
     );
     expect(isInvalidEmail).toBe(true);
   }
 
-  async checkInvalidCredentialsError() {
-    await this.page.waitForSelector('text=Incorrect username or password', { timeout: 10000 });
-    const errorMessage = await this.page.locator('text=Incorrect username or password').textContent();
+  /**
+   * @method Verifies the "Incorrect username or password" error message is displayed.
+   */
+  async checkInvalidCredentialsError(): Promise<void> {
+    await this.page.waitForSelector(LOGIN_SELECTORS.invalidCredentialsError, { timeout: 10000 });
+    const errorMessage = await this.page.locator(LOGIN_SELECTORS.invalidCredentialsError).textContent();
     expect(errorMessage).toContain('Incorrect username or password');
   }
 
