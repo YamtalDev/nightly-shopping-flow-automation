@@ -6,11 +6,13 @@ import { Locator, expect } from '@playwright/test';
  * @param timeout Maximum time to wait in milliseconds.
  */
 export async function clickElementWhenReady(locator: Locator, timeout = 8000) {
-  try {
-    await expect(locator).toBeVisible({ timeout });
-    await expect(locator).toBeEnabled({ timeout });
-    await locator.click({ timeout });
-  } catch (error) {
-    throw new Error(`Failed to click element: ${locator} within ${timeout}ms. Error: ${error}`);
-  }
+	try {
+		await expect(locator).toBeVisible({ timeout });
+		await expect(locator).toBeEnabled({ timeout });
+		await locator.click({ timeout });
+	} catch (error) {
+		throw new Error(
+			`Failed to click element: ${locator} within ${timeout}ms. Error: ${error}`
+		);
+	}
 }

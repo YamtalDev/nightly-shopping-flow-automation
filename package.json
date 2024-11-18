@@ -9,7 +9,10 @@
     "test:ci": "playwright test --reporter=dot",
     "build": "tsc",
     "clean": "rm -rf dist test-results playwright-report",
-    "docs": "typedoc --out docs src"
+    "docs": "typedoc --out docs src",
+    "lint": "eslint 'src/**/*.{js,ts}'",
+    "lint:fix": "eslint 'src/**/*.{js,ts}' --fix",
+    "format": "prettier --write 'src/**/*.{js,ts,json,md}'"
   },
   "repository": {
     "type": "git",
@@ -23,12 +26,19 @@
   },
   "homepage": "https://github.com/YamtalDev/nightly-shopping-flow-automation#readme",
   "devDependencies": {
+    "@eslint/js": "^9.15.0",
     "@playwright/test": "^1.48.2",
     "@types/node": "^22.9.0",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.12.0",
     "playwright": "^1.48.2",
+    "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "typedoc": "^0.26.11",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.14.0"
   },
   "dependencies": {
     "dotenv": "^16.4.5"
