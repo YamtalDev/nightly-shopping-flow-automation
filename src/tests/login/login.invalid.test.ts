@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import test from '../../fixtures/PageFixture';
 import { testUsers } from '../../utils/data/testData';
 
-test.describe.parallel('Invalid Email and Credentials Login Test', () => {
+test.describe.serial('Invalid Email and Credentials Login Test', () => {
 	test('Should display an error for invalid email format', async ({
 		loginPage,
 		page,
