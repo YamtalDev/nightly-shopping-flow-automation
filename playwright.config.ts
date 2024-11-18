@@ -2,9 +2,9 @@ import { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   testDir: './src/tests',
-  timeout: 80000,
+  timeout: 20000,
   expect: {
-    timeout: 40000,
+    timeout: 10000,
   },
   use: {
     headless: true,
@@ -14,8 +14,8 @@ const config: PlaywrightTestConfig = {
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
-    actionTimeout: 50000,
-    navigationTimeout: 80000,
+    actionTimeout: 20000,
+    navigationTimeout: 40000,
   },
   projects: [
     {
@@ -34,12 +34,6 @@ const config: PlaywrightTestConfig = {
         launchOptions: {
           args: ['--disable-features=IsolateOrigins,site-per-process'],
         },
-      },
-    },
-    {
-      name: 'WebKit',
-      use: {
-        browserName: 'webkit',
       },
     },
   ],

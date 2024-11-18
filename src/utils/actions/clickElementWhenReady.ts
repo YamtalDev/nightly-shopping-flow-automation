@@ -9,6 +9,7 @@ export async function clickElementWhenReady(locator: Locator, timeout = 8000) {
 	try {
 		await expect(locator).toBeVisible({ timeout });
 		await expect(locator).toBeEnabled({ timeout });
+		await locator.scrollIntoViewIfNeeded();
 		await locator.click({ timeout });
 	} catch (error) {
 		throw new Error(
