@@ -13,27 +13,25 @@
 5. [Installation](#installation)
     - [Clone the Repository](#clone-the-repository)
     - [Install Dependencies](#install-dependencies)
-    - [Configure Environment Variables](#configure-environment-variables)
     - [Install Playwright Browsers](#install-playwright-browsers)
-6. [Create a Test Account](#create-a-test-account)
-7. [Available Scripts](#available-scripts)
+6. [Available Scripts](#available-scripts)
     - [Test Scripts](#test-scripts)
     - [Build and Clean Scripts](#build-and-clean-scripts)
     - [Documentation and Linting Scripts](#documentation-and-linting-scripts)
-8. [Project Structure](#project-structure)
-9. [Running the Tests](#running-the-tests)
+7. [Project Structure](#project-structure)
+8. [Running the Tests](#running-the-tests)
     - [Running Tests Locally](#running-tests-locally)
     - [Running Tests in Headed Mode](#running-tests-in-headed-mode)
     - [Generating Test Reports](#generating-test-reports)
-10. [Continuous Integration (CI) with GitHub Actions](#continuous-integration-ci-with-github-actions)
+9. [Continuous Integration (CI) with GitHub Actions](#continuous-integration-ci-with-github-actions)
     - [Workflow Overview](#workflow-overview)
     - [CI Configuration](#ci-configuration)
-11. [Test Suite Overview](#test-suite-overview)
+10. [Test Suite Overview](#test-suite-overview)
     - [Test Flow](#test-flow)
     - [Test Structure](#test-structure)
-12. [Troubleshooting](#troubleshooting)
-13. [License](#license)
-14. [Contact](#contact)
+11. [Troubleshooting](#troubleshooting)
+12. [License](#license)
+13. [Contact](#contact)
 
 ## Introduction
 
@@ -41,7 +39,7 @@
 
 ## Features
 
-- **Cross-Browser Support**: Tests run on Chromium, Firefox, and WebKit to ensure consistent behavior across major browsers.
+- **Cross-Browser Support**: Tests run on Chromium and Edge to ensure consistent behavior across major browsers.
 - **Modular Architecture**: Utilizes the Page Object Model (POM) for maintainability and scalability.
 - **Comprehensive Test Coverage**: Covers login, product selection, cart management, checkout, and order verification flows.
 - **Edge Case Testing**: Includes tests for invalid credentials, account lockout, and other edge scenarios.
@@ -96,24 +94,6 @@ This command installs:
 - **ts-node**: To execute TypeScript files directly.
 - **Other Development Dependencies**: As specified in `package.json`.
 
-### Configure Environment Variables
-
-Create a `.env` file in the root directory to store your environment variables:
-
-```bash
-cp .env.example .env
-```
-
-Open the `.env` file and populate it with your credentials:
-
-```env
-EMAIL=your-email@example.com
-PASSWORD=your-secure-password
-BASE_URL=https://main.d2t1pk7fjag8u6.amplifyapp.com/
-```
-
-**Note**: Replace `your-email@example.com` and `your-secure-password` with the credentials of the user account created for testing purposes.
-
 ### Install Playwright Browsers
 
 Playwright requires browser binaries to run tests. Install them using:
@@ -122,38 +102,7 @@ Playwright requires browser binaries to run tests. Install them using:
 npx playwright install
 ```
 
-This command downloads the necessary browsers (Chromium, Firefox, WebKit) required for cross-browser testing.
-
-## Create a Test Account
-
-Before running the tests, you need to have a valid user account on the shopping website. Follow these steps to create one:
-
-1. **Navigate to the Website:**
-
-   Open your web browser and go to [https://main.d2t1pk7fjag8u6.amplifyapp.com/](https://main.d2t1pk7fjag8u6.amplifyapp.com/).
-
-2. **Create an Account:**
-
-   - Click on the "Sign Up" or "Register" button (if available) on the homepage.
-   - Fill in the required details, such as your email address and a secure password.
-   - Submit the registration form to create your account.
-
-3. **Verify Your Email (If Applicable):**
-
-   - Some websites require email verification. Check your email inbox for a verification link and follow the instructions to activate your account.
-
-4. **Update the `.env` File:**
-
-   - Open the `.env` file you created earlier.
-   - Replace the `EMAIL` and `PASSWORD` values with the credentials of the account you just created.
-
-   ```env
-   EMAIL=your-email@example.com
-   PASSWORD=your-secure-password
-   BASE_URL=https://main.d2t1pk7fjag8u6.amplifyapp.com/
-   ```
-
-**Important:** Ensure that the email and password in the `.env` file match the credentials of the account you created on the website. This account will be used by the automated tests to perform login and other user-specific actions.
+This command downloads the necessary browsers (Chromium and Edge) required for cross-browser testing.
 
 ## Available Scripts
 
@@ -177,7 +126,7 @@ The project includes several npm scripts to facilitate various tasks such as tes
 
 - **`npm run test`**
 
-  Runs the entire Playwright test suite across all configured browsers (Chromium, Firefox, WebKit) in headless mode. This is the primary command to execute all automated tests.
+  Runs the entire Playwright test suite across all configured browsers (Chromium and Edge) in headless mode. This is the primary command to execute all automated tests.
 
   ```bash
   npm run test
@@ -350,7 +299,7 @@ To execute all tests in the `src/tests` directory:
 npm run test
 ```
 
-This command runs the test suite across all configured browsers (Chromium, Firefox, WebKit) in headless mode. It ensures that the application's critical flows are functioning correctly without the need for a visible browser window.
+This command runs the test suite across all configured browsers (Chromium and Edge) in headless mode. It ensures that the application's critical flows are functioning correctly without the need for a visible browser window.
 
 ### Running Tests in Headed Mode
 
@@ -420,7 +369,7 @@ jobs:
 
     strategy:
       matrix:
-        browser: [chromium, firefox, webkit]
+        browser: [chromium, edge]
 
     steps:
       - name: Checkout Repository
@@ -435,7 +384,7 @@ jobs:
         run: npm install
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install
 
       - name: Run Tests
         run: npx playwright test
@@ -455,13 +404,13 @@ jobs:
   - **Push and Pull Requests:** Executes the workflow on pushes and pull requests targeting the `main` branch.
 
 - **Jobs:**
-  - **Test Job:** Executes the test suite across Chromium, Firefox, and WebKit browsers to ensure cross-browser compatibility.
+  - **Test Job:** Executes the test suite across Chromium and Edge browsers to ensure cross-browser compatibility.
 
 - **Steps:**
   1. **Checkout Repository:** Retrieves the latest code from the repository.
   2. **Setup Node.js:** Installs Node.js version 16, which is specified as the required version for the project.
   3. **Install Dependencies:** Runs `npm install` to install all necessary project dependencies.
-  4. **Install Playwright Browsers:** Executes `npx playwright install --with-deps` to install Playwright browsers along with any additional dependencies required by the browsers.
+  4. **Install Playwright Browsers:** Executes `npx playwright install` to install Playwright browsers.
   5. **Run Tests:** Executes the Playwright test suite using `npx playwright test`.
   6. **Upload Test Results:** Regardless of test outcomes, this step uploads the `test-results/` directory as an artifact for later review.
 
@@ -479,7 +428,7 @@ The automated test suite follows the end-to-end flow of a user interacting with 
 
 1. **Navigate to the Website and Log In:**
    - Accesses the base URL.
-   - Logs in using valid credentials stored in the `.env` file.
+   - Logs in using valid credentials provided in the `.env` file.
 
 2. **Add Products to the Shopping Cart:**
    - Selects two different products.
@@ -577,3 +526,22 @@ For any questions, suggestions, or feedback, please reach out to:
 - **GitHub:** [YamtalDev](https://github.com/YamtalDev)
 
 ---
+
+**Notes on Changes:**
+
+- **Removed Sections:**
+  - **Configure Environment Variables:** Instructions on creating and configuring the `.env` file using `.env.example` have been removed, as the `.env` file is now provided.
+  - **Create a Test Account:** The section guiding users to register an account on the application has been removed, since registration is no longer necessary.
+- **Updated Browser References:**
+  - All mentions of **WebKit** have been removed. The test suite now runs on **Chromium** and **Edge** only.
+  - The **Features** and **CI Configuration** sections have been updated to reflect this change.
+- **Adjusted Installation Steps:**
+  - The **Install Playwright Browsers** section now mentions only Chromium and Edge.
+- **CI Workflow Update:**
+  - The browser matrix in the CI configuration (`ci.yml`) now includes **Chromium** and **Edge**.
+- **Test Flow and Structure:**
+  - The test suite overview has been updated to ensure consistency with the changes.
+
+---
+
+The `README.md` now accurately reflects the current state of the project, making it straightforward for users to set up and run the tests without needing to register or configure additional environment variables.
