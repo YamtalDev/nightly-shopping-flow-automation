@@ -26,9 +26,9 @@ export class CartPage {
       const textContent = await cartItem.textContent();
       if (!textContent?.includes(`Quantity: ${quantity}`)) {
         throw new Error(
-          `Expected quantity ${quantity} for "${productName}", but found different quantity.`
+            `Verification failed: Expected "${productName}" with quantity ${quantity}, but found "${textContent}".`
         );
-      }
+    }
     } catch (error) {
       throw new Error(
         `Product "${productName}" with quantity ${quantity} not found in the cart. ${error}`
