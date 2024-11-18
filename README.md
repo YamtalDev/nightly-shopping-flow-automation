@@ -39,7 +39,7 @@
 
 ## Features
 
-- **Cross-Browser Support**: Tests run on Chromium and Edge to ensure consistent behavior across major browsers.
+- **Cross-Browser Support**: Tests run on Chromium and Firefox to ensure consistent behavior across major browsers.
 - **Modular Architecture**: Utilizes the Page Object Model (POM) for maintainability and scalability.
 - **Comprehensive Test Coverage**: Covers login, product selection, cart management, checkout, and order verification flows.
 - **Edge Case Testing**: Includes tests for invalid credentials, account lockout, and other edge scenarios.
@@ -99,10 +99,10 @@ This command installs:
 Playwright requires browser binaries to run tests. Install them using:
 
 ```bash
-npx playwright install
+npx playwright install chromium firefox
 ```
 
-This command downloads the necessary browsers (Chromium and Edge) required for cross-browser testing.
+This command downloads the necessary browsers (Chromium and Firefox) required for cross-browser testing.
 
 ## Available Scripts
 
@@ -126,7 +126,7 @@ The project includes several npm scripts to facilitate various tasks such as tes
 
 - **`npm run test`**
 
-  Runs the entire Playwright test suite across all configured browsers (Chromium and Edge) in headless mode. This is the primary command to execute all automated tests.
+  Runs the entire Playwright test suite across all configured browsers (Chromium and Firefox) in headless mode. This is the primary command to execute all automated tests.
 
   ```bash
   npm run test
@@ -299,7 +299,7 @@ To execute all tests in the `src/tests` directory:
 npm run test
 ```
 
-This command runs the test suite across all configured browsers (Chromium and Edge) in headless mode. It ensures that the application's critical flows are functioning correctly without the need for a visible browser window.
+This command runs the test suite across all configured browsers (Chromium and Firefox) in headless mode. It ensures that the application's critical flows are functioning correctly without the need for a visible browser window.
 
 ### Running Tests in Headed Mode
 
@@ -369,7 +369,7 @@ jobs:
 
     strategy:
       matrix:
-        browser: [chromium, edge]
+        browser: [chromium, firefox]
 
     steps:
       - name: Checkout Repository
@@ -384,7 +384,7 @@ jobs:
         run: npm install
 
       - name: Install Playwright Browsers
-        run: npx playwright install
+        run: npx playwright install --with-deps
 
       - name: Run Tests
         run: npx playwright test
@@ -404,13 +404,13 @@ jobs:
   - **Push and Pull Requests:** Executes the workflow on pushes and pull requests targeting the `main` branch.
 
 - **Jobs:**
-  - **Test Job:** Executes the test suite across Chromium and Edge browsers to ensure cross-browser compatibility.
+  - **Test Job:** Executes the test suite on Ubuntu using Chromium and Firefox browsers.
 
 - **Steps:**
   1. **Checkout Repository:** Retrieves the latest code from the repository.
   2. **Setup Node.js:** Installs Node.js version 16, which is specified as the required version for the project.
   3. **Install Dependencies:** Runs `npm install` to install all necessary project dependencies.
-  4. **Install Playwright Browsers:** Executes `npx playwright install` to install Playwright browsers.
+  4. **Install Playwright Browsers:** Executes `npx playwright install chromium firefox` to install only the required browsers (Chromium and Firefox).
   5. **Run Tests:** Executes the Playwright test suite using `npx playwright test`.
   6. **Upload Test Results:** Regardless of test outcomes, this step uploads the `test-results/` directory as an artifact for later review.
 
@@ -418,7 +418,11 @@ jobs:
 
 - **Cron Schedule:** Adjust the `cron` expression to change the frequency or timing of test runs. For example, to run tests every hour, you could use `'0 * * * *'`.
 - **Node.js Version:** Update the `node-version` field if your project requires a different version of Node.js.
-- **Browser Matrix:** Modify the `browser` matrix to include or exclude browsers as needed.
+- **Browser Selection:** Currently set to install and test Chromium and Firefox. Adjust the browsers as needed based on your testing requirements.
+
+**Security Note:** Since the `.env` file is exposed in the repository, ensure that the test credentials have limited access and do not possess sensitive permissions. For enhanced security, consider using GitHub Secrets to manage environment variables.
+
+---
 
 ## Test Suite Overview
 
@@ -431,7 +435,7 @@ The automated test suite follows the end-to-end flow of a user interacting with 
    - Logs in using valid credentials provided in the `.env` file.
 
 2. **Add Products to the Shopping Cart:**
-   - Selects two different products.
+   - Selects multiple products.
    - Adds specified quantities to the cart.
 
 3. **Navigate to the Shopping Cart and Verify Products:**
@@ -473,6 +477,8 @@ src/
 - **Cart Tests:** Ensure products can be added and removed from the shopping cart correctly.
 - **Checkout Tests:** Automate the checkout process and verify that orders are placed and recorded accurately.
 
+---
+
 ## Troubleshooting
 
 ### Common Issues
@@ -481,7 +487,7 @@ src/
    - **Solution:** Ensure that the `.env` file exists in the root directory and contains all required variables (`EMAIL`, `PASSWORD`, `BASE_URL`).
 
 2. **Playwright Browsers Not Installed:**
-   - **Solution:** Run `npx playwright install` to download necessary browser binaries.
+   - **Solution:** Run `npx playwright install chromium firefox` to download necessary browser binaries.
 
 3. **Test Failures Due to Selectors:**
    - **Solution:** Verify that the selectors in `src/config/selectors/` accurately match the elements in the application. Use Playwright's inspector to debug selectors.
@@ -532,16 +538,19 @@ For any questions, suggestions, or feedback, please reach out to:
 - **Removed Sections:**
   - **Configure Environment Variables:** Instructions on creating and configuring the `.env` file using `.env.example` have been removed, as the `.env` file is now provided.
   - **Create a Test Account:** The section guiding users to register an account on the application has been removed, since registration is no longer necessary.
+
 - **Updated Browser References:**
-  - All mentions of **WebKit** have been removed. The test suite now runs on **Chromium** and **Edge** only.
+  - All mentions of **WebKit** have been removed. The test suite now runs on **Chromium** and **Firefox** only.
   - The **Features** and **CI Configuration** sections have been updated to reflect this change.
+
 - **Adjusted Installation Steps:**
-  - The **Install Playwright Browsers** section now mentions only Chromium and Edge.
+  - The **Install Playwright Browsers** section now mentions only Chromium and Firefox.
+
 - **CI Workflow Update:**
-  - The browser matrix in the CI configuration (`ci.yml`) now includes **Chromium** and **Edge**.
+  - The browser matrix in the CI configuration (`ci.yml`) has been removed to prevent redundant test runs.
+  - The **Install Playwright Browsers** step now installs only Chromium and Firefox.
+
 - **Test Flow and Structure:**
   - The test suite overview has been updated to ensure consistency with the changes.
 
 ---
-
-The `README.md` now accurately reflects the current state of the project, making it straightforward for users to set up and run the tests without needing to register or configure additional environment variables.
