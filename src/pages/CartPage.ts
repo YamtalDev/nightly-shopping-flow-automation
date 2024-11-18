@@ -29,6 +29,35 @@ export class CartPage {
   }
 
   /**
+   * Removes a product from the cart.
+   * @param productName - The name of the product to remove.
+   */
+  async removeProductFromCart(productName: string) {
+    try {
+      const removeButtonSelector = `li:has-text("${productName} -") >> button:has-text("Remove")`;
+      const removeButton = this.page.locator(removeButtonSelector);
+      await clickElementWhenReady(removeButton);
+      // Wait for the cart to update
+      await this.page.waitForTimeout(1000);
+    } catch (error) {
+      throw new Error(`Failed to remove product "${productName}" from the cart. ${error}`);
+    }
+  }
+
+  /**
+   * Verifies that a product is not present in the cart.
+   * @param productName - The name of the product to verify.
+   */
+  async verifyProductNotInCart(productName: string) {
+    try {
+      const cartItem = this.page.locator(CART_SELECTORS.cartItem(productName));
+      await expect(cartItem).toHaveCount(0, { timeout: 5000 });
+    } catch (error) {
+      throw new Error(`Product "${productName}" is still present in the cart. ${error}`);
+    }
+  }
+
+  /**
    * Proceeds to the checkout page.
    */
   async proceedToCheckout() {

@@ -2,20 +2,20 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   testDir: './src/tests',
-  timeout: 30000, // Reduced from 80000ms to 30000ms for better efficiency
+  timeout: 60000,
   expect: {
-    timeout: 5000, // Reduced from 7000ms
+    timeout: 20000,
   },
   use: {
     headless: true,
-    viewport: { width: 1280, height: 720 },
+    viewport: { width: 1920, height: 1080 },
+    colorScheme: 'light',
     ignoreHTTPSErrors: true,
-    video: 'retain-on-failure', // Capture video only on failure to save space
+    video: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    trace: 'retain-on-failure', // Retain trace on failure for debugging
-    actionTimeout: 10000, // Timeout for individual actions
-    navigationTimeout: 30000, // Timeout for navigations
-    // Remove global launchOptions
+    trace: 'retain-on-failure',
+    actionTimeout: 30000,
+    navigationTimeout: 60000,
   },
   projects: [
     {
@@ -40,7 +40,6 @@ const config: PlaywrightTestConfig = {
       name: 'WebKit',
       use: {
         browserName: 'webkit',
-        // No additional launch arguments for WebKit
       },
     },
   ],
