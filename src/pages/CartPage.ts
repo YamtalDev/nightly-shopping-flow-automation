@@ -80,7 +80,6 @@ export class CartPage {
       await clickElementWhenReady(
         this.page.locator(CART_SELECTORS.proceedToCheckoutButton)
       );
-      await this.page.waitForLoadState('networkidle');
       await expect(this.page).toHaveURL(`${environment.BASE_URL}/checkout`);
     } catch (error) {
       throw new Error(`Failed to proceed to checkout. ${error}`);
