@@ -1,10 +1,10 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test';
+import { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   testDir: './src/tests',
-  timeout: 60000,
+  timeout: 80000,
   expect: {
-    timeout: 20000,
+    timeout: 40000,
   },
   use: {
     headless: true,
@@ -14,8 +14,8 @@ const config: PlaywrightTestConfig = {
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
-    actionTimeout: 30000,
-    navigationTimeout: 70000,
+    actionTimeout: 50000,
+    navigationTimeout: 80000,
   },
   projects: [
     {

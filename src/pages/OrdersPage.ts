@@ -14,19 +14,14 @@ export class OrdersPage {
   async navigateToOrdersPage() {
     try {
       await this.page.goto(`${environment.BASE_URL}/orders`, { waitUntil: 'networkidle' });
-
-      // Verify the URL
       await expect(this.page).toHaveURL(`${environment.BASE_URL}/orders`);
 
-      // Check that at least one order heading is visible
       const orderHeadings = this.page.locator('h2:has-text("Order")');
       const count = await orderHeadings.count();
       if (count === 0) {
         throw new Error('No orders found on the Orders page.');
       }
 
-      // Optionally, log the number of orders found for debugging
-      console.log(`Found ${count} orders on the Orders page.`);
     } catch (error) {
       throw new Error(`Navigation to orders page failed. ${error}`);
     }
