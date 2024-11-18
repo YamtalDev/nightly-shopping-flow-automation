@@ -15,22 +15,25 @@
     - [Install Dependencies](#install-dependencies)
     - [Configure Environment Variables](#configure-environment-variables)
     - [Install Playwright Browsers](#install-playwright-browsers)
-6. [Project Structure](#project-structure)
-7. [Running the Tests](#running-the-tests)
+6. [Create a Test Account](#create-a-test-account)
+7. [Available Scripts](#available-scripts)
+    - [Test Scripts](#test-scripts)
+    - [Build and Clean Scripts](#build-and-clean-scripts)
+    - [Documentation and Linting Scripts](#documentation-and-linting-scripts)
+8. [Project Structure](#project-structure)
+9. [Running the Tests](#running-the-tests)
     - [Running Tests Locally](#running-tests-locally)
     - [Running Tests in Headed Mode](#running-tests-in-headed-mode)
     - [Generating Test Reports](#generating-test-reports)
-8. [Continuous Integration (CI) with GitHub Actions](#continuous-integration-ci-with-github-actions)
+10. [Continuous Integration (CI) with GitHub Actions](#continuous-integration-ci-with-github-actions)
     - [Workflow Overview](#workflow-overview)
     - [CI Configuration](#ci-configuration)
-9. [Test Suite Overview](#test-suite-overview)
+11. [Test Suite Overview](#test-suite-overview)
     - [Test Flow](#test-flow)
     - [Test Structure](#test-structure)
-10. [Troubleshooting](#troubleshooting)
-11. [Contributing](#contributing)
-12. [License](#license)
-13. [Contact](#contact)
-14. [Acknowledgments](#acknowledgments)
+12. [Troubleshooting](#troubleshooting)
+13. [License](#license)
+14. [Contact](#contact)
 
 ## Introduction
 
@@ -42,7 +45,7 @@
 - **Modular Architecture**: Utilizes the Page Object Model (POM) for maintainability and scalability.
 - **Comprehensive Test Coverage**: Covers login, product selection, cart management, checkout, and order verification flows.
 - **Edge Case Testing**: Includes tests for invalid credentials, account lockout, and other edge scenarios.
-- **Continuous Integration**: Automated daily test runs via GitHub Actions, ensuring the system's reliability.
+- **Continuous Integration**: Automated daily test runs via GitHub Actions.
 - **Detailed Reporting**: Generates HTML, JSON, and video reports for in-depth analysis of test runs.
 - **Robust Error Handling**: Provides informative error messages and handles exceptions gracefully.
 - **Secure Configuration**: Uses environment variables to manage sensitive data like user credentials.
@@ -73,7 +76,7 @@ Before setting up the project, ensure you have the following installed on your m
 Start by cloning the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/nightly-shopping-flow-automation.git
+git clone https://github.com/YamtalDev/nightly-shopping-flow-automation.git
 cd nightly-shopping-flow-automation
 ```
 
@@ -121,6 +124,151 @@ npx playwright install
 
 This command downloads the necessary browsers (Chromium, Firefox, WebKit) required for cross-browser testing.
 
+## Create a Test Account
+
+Before running the tests, you need to have a valid user account on the shopping website. Follow these steps to create one:
+
+1. **Navigate to the Website:**
+
+   Open your web browser and go to [https://main.d2t1pk7fjag8u6.amplifyapp.com/](https://main.d2t1pk7fjag8u6.amplifyapp.com/).
+
+2. **Create an Account:**
+
+   - Click on the "Sign Up" or "Register" button (if available) on the homepage.
+   - Fill in the required details, such as your email address and a secure password.
+   - Submit the registration form to create your account.
+
+3. **Verify Your Email (If Applicable):**
+
+   - Some websites require email verification. Check your email inbox for a verification link and follow the instructions to activate your account.
+
+4. **Update the `.env` File:**
+
+   - Open the `.env` file you created earlier.
+   - Replace the `EMAIL` and `PASSWORD` values with the credentials of the account you just created.
+
+   ```env
+   EMAIL=your-email@example.com
+   PASSWORD=your-secure-password
+   BASE_URL=https://main.d2t1pk7fjag8u6.amplifyapp.com/
+   ```
+
+**Important:** Ensure that the email and password in the `.env` file match the credentials of the account you created on the website. This account will be used by the automated tests to perform login and other user-specific actions.
+
+## Available Scripts
+
+The project includes several npm scripts to facilitate various tasks such as testing, building, linting, and generating documentation. Below is an overview of these scripts along with explanations of the most important ones.
+
+```json
+"scripts": {
+  "test": "playwright test",
+  "test:report": "playwright show-report",
+  "test:ci": "playwright test --reporter=dot",
+  "build": "tsc",
+  "clean": "rm -rf dist test-results playwright-report",
+  "docs": "typedoc --out docs src",
+  "lint": "eslint 'src/**/*.{js,ts}'",
+  "lint:fix": "eslint 'src/**/*.{js,ts}' --fix",
+  "format": "prettier --write 'src/**/*.{js,ts,json,md}'"
+},
+```
+
+### Test Scripts
+
+- **`npm run test`**
+
+  Runs the entire Playwright test suite across all configured browsers (Chromium, Firefox, WebKit) in headless mode. This is the primary command to execute all automated tests.
+
+  ```bash
+  npm run test
+  ```
+
+- **`npm run test:report`**
+
+  Opens the HTML test report generated by Playwright. This report provides a detailed overview of test results, including passed and failed tests, screenshots, and video recordings.
+
+  ```bash
+  npm run test:report
+  ```
+
+- **`npm run test:ci`**
+
+  Runs the Playwright tests using the dot reporter, which is suitable for Continuous Integration (CI) environments. This reporter provides concise output without verbose details.
+
+  ```bash
+  npm run test:ci
+  ```
+
+### Build and Clean Scripts
+
+- **`npm run build`**
+
+  Compiles the TypeScript source code into JavaScript, outputting the files to the `dist` directory as specified in the `tsconfig.json`.
+
+  ```bash
+  npm run build
+  ```
+
+- **`npm run clean`**
+
+  Removes build artifacts and test results, including the `dist`, `test-results`, and `playwright-report` directories. This is useful for resetting the project state.
+
+  ```bash
+  npm run clean
+  ```
+
+### Documentation and Linting Scripts
+
+- **`npm run docs`**
+
+  Generates project documentation using TypeDoc and outputs it to the `docs` directory. This helps in maintaining up-to-date documentation based on the codebase.
+
+  ```bash
+  npm run docs
+  ```
+
+- **`npm run lint`**
+
+  Runs ESLint on all JavaScript and TypeScript files within the `src` directory. ESLint checks for code quality issues, ensuring that the code adheres to predefined standards and best practices.
+
+  ```bash
+  npm run lint
+  ```
+
+- **`npm run lint:fix`**
+
+  Executes ESLint with the `--fix` option, which automatically corrects fixable linting errors in the codebase. This helps in maintaining consistent code formatting and style.
+
+  ```bash
+  npm run lint:fix
+  ```
+
+- **`npm run format`**
+
+  Formats all JavaScript, TypeScript, JSON, and Markdown files within the `src` directory using Prettier. Consistent code formatting enhances readability and maintainability.
+
+  ```bash
+  npm run format
+  ```
+
+**Important Scripts Explained:**
+
+1. **`test`**
+
+   The primary script to run all automated tests. It ensures that the application's critical flows are functioning as expected across different browsers.
+
+2. **`test:report`**
+
+   After running tests, this script generates a comprehensive HTML report. Reviewing this report helps in understanding test outcomes, identifying failures, and debugging issues.
+
+3. **`test:ci`**
+
+   Optimized for Continuous Integration environments, this script runs tests with a minimal output format, making it suitable for automated pipelines where detailed logs are unnecessary.
+
+4. **`lint` and `lint:fix`**
+
+   These scripts enforce code quality and consistency. Running `lint` helps identify potential issues, while `lint:fix` automatically resolves fixable problems, ensuring that the codebase remains clean and maintainable.
+
 ## Project Structure
 
 Here's an overview of the project's directory structure:
@@ -138,7 +286,7 @@ Here's an overview of the project's directory structure:
 │   │       ├── LoginSelectors.ts
 │   │       └── OrdersSelectors.ts
 │   ├── fixtures/
-│   │   └── loginFixture.ts
+│   │   └── PageFixture.ts
 │   ├── pages/
 │   │   ├── CartPage.ts
 │   │   ├── CheckoutPage.ts
@@ -162,25 +310,35 @@ Here's an overview of the project's directory structure:
 │           └── testData.ts
 ├── playwright.config.ts
 ├── tsconfig.json
-├── package.json
-├── package-lock.json
-├── README.md
-└── LICENSE
+└── .env
 ```
 
 ### Key Directories and Files
 
-- **.github/workflows/**: Contains GitHub Actions workflows for CI.
-- **src/config/**: Configuration files, including environment variables and selectors.
-- **src/fixtures/**: Test fixtures that extend Playwright's base test.
-- **src/pages/**: Page Object Model (POM) classes encapsulating interactions with specific pages.
-- **src/tests/**: Test files organized by feature (login, cart, checkout).
-- **src/utils/**: Utility functions and test data.
-- **playwright.config.ts**: Playwright configuration file.
-- **tsconfig.json**: TypeScript configuration.
-- **package.json**: Project dependencies and scripts.
-- **LICENSE**: MIT License.
-- **README.md**: Project documentation.
+- **`.github/workflows/`**: Contains GitHub Actions workflows for Continuous Integration (CI), automating test runs on specified triggers.
+
+- **`src/config/`**:
+  - **`environment.ts`**: Manages environment variables and configurations.
+  - **`selectors/`**: Stores selector definitions for different pages, promoting reusability and maintainability.
+
+- **`src/fixtures/`**:
+  - **`PageFixture.ts`**: Defines test fixtures that extend Playwright's base test, providing pre-configured page objects for use in tests.
+
+- **`src/pages/`**:
+  - **Page Object Model (POM) Classes**: Encapsulate interactions with specific pages of the application, such as `LoginPage`, `CartPage`, `CheckoutPage`, `OrdersPage`, and `ProductPage`.
+
+- **`src/tests/`**:
+  - **Feature-Based Test Organization**: Tests are organized into subdirectories based on the feature they cover, such as `cart`, `checkout`, and `login`. This structure enhances readability and scalability.
+
+- **`src/utils/`**:
+  - **`actions/`**: Contains utility functions for common actions, like `clickElementWhenReady`, which handles clicking elements with appropriate waits.
+  - **`data/`**: Stores test data, such as product combinations used in tests.
+
+- **`playwright.config.ts`**: Playwright configuration file defining test settings, reporters, browsers, and other options.
+
+- **`tsconfig.json`**: TypeScript configuration file specifying compiler options and project structure.
+
+- **`.env`**: Environment variables file storing sensitive data like user credentials and base URLs.
 
 ## Running the Tests
 
@@ -192,21 +350,25 @@ To execute all tests in the `src/tests` directory:
 npm run test
 ```
 
-This command runs the test suite across all configured browsers (Chromium, Firefox, WebKit) in headless mode.
+This command runs the test suite across all configured browsers (Chromium, Firefox, WebKit) in headless mode. It ensures that the application's critical flows are functioning correctly without the need for a visible browser window.
 
 ### Running Tests in Headed Mode
 
-For debugging purposes, you might want to run tests with the browser UI visible:
+For debugging purposes, you might want to run tests with the browser UI visible. This allows you to observe the test execution in real-time and identify issues more effectively.
 
 ```bash
-npx playwright test src/tests/checkout/ --headed
+npx playwright test src/tests/login --headed
 ```
 
-Replace `checkout/` with the desired test directory or file as needed.
+Replace `login/` with the desired test directory or file as needed. You can also run all the tests in headed mode by omitting the directory or file specification:
+
+```bash
+npx playwright test --headed
+```
 
 ### Generating Test Reports
 
-After running tests, Playwright generates detailed reports. To view them:
+After running tests, Playwright generates detailed reports that provide insights into test outcomes, including passed and failed tests, screenshots, and video recordings.
 
 1. **Run Tests with Report Generation:**
 
@@ -227,13 +389,13 @@ After running tests, Playwright generates detailed reports. To view them:
    npx playwright show-report
    ```
 
-   This command opens an HTML report in your default browser, providing a comprehensive overview of the test results.
+   This command opens an HTML report in your default browser, providing a comprehensive overview of the test results. The report includes details such as test durations, failure reasons, and visual artifacts like screenshots and videos.
 
 ## Continuous Integration (CI) with GitHub Actions
 
 ### Workflow Overview
 
-GitHub Actions is configured to run your test suite daily, ensuring that the shopping flow remains functional and any regressions are promptly detected.
+GitHub Actions is configured to run your test suite daily, ensuring that the shopping flow remains functional and any regressions are promptly detected. This automated approach helps maintain the reliability and stability of the application by continuously validating its critical functionalities.
 
 ### CI Configuration
 
@@ -289,24 +451,25 @@ jobs:
 **Key Components:**
 
 - **Trigger Events:**
-  - **Scheduled Runs:** Daily at midnight UTC.
-  - **Push and Pull Requests:** On changes to the `main` branch.
+  - **Scheduled Runs:** Configured to run daily at midnight UTC using a cron schedule (`'0 0 * * *'`).
+  - **Push and Pull Requests:** Executes the workflow on pushes and pull requests targeting the `main` branch.
 
 - **Jobs:**
-  - **Test Job:** Executes the test suite across Chromium, Firefox, and WebKit.
+  - **Test Job:** Executes the test suite across Chromium, Firefox, and WebKit browsers to ensure cross-browser compatibility.
 
 - **Steps:**
-  1. **Checkout Repository:** Retrieves the latest code.
-  2. **Setup Node.js:** Installs Node.js version 16.
-  3. **Install Dependencies:** Runs `npm install` to install project dependencies.
-  4. **Install Playwright Browsers:** Ensures Playwright has all necessary browsers.
-  5. **Run Tests:** Executes the test suite.
-  6. **Upload Test Results:** Saves test artifacts for review.
+  1. **Checkout Repository:** Retrieves the latest code from the repository.
+  2. **Setup Node.js:** Installs Node.js version 16, which is specified as the required version for the project.
+  3. **Install Dependencies:** Runs `npm install` to install all necessary project dependencies.
+  4. **Install Playwright Browsers:** Executes `npx playwright install --with-deps` to install Playwright browsers along with any additional dependencies required by the browsers.
+  5. **Run Tests:** Executes the Playwright test suite using `npx playwright test`.
+  6. **Upload Test Results:** Regardless of test outcomes, this step uploads the `test-results/` directory as an artifact for later review.
 
 **Customization:**
 
-- **Cron Schedule:** Adjust the `cron` expression in the workflow file to change the frequency or timing of test runs.
-- **Node.js Version:** Update the `node-version` field to use a different Node.js version if necessary.
+- **Cron Schedule:** Adjust the `cron` expression to change the frequency or timing of test runs. For example, to run tests every hour, you could use `'0 * * * *'`.
+- **Node.js Version:** Update the `node-version` field if your project requires a different version of Node.js.
+- **Browser Matrix:** Modify the `browser` matrix to include or exclude browsers as needed.
 
 ## Test Suite Overview
 
@@ -316,7 +479,7 @@ The automated test suite follows the end-to-end flow of a user interacting with 
 
 1. **Navigate to the Website and Log In:**
    - Accesses the base URL.
-   - Logs in using valid credentials.
+   - Logs in using valid credentials stored in the `.env` file.
 
 2. **Add Products to the Shopping Cart:**
    - Selects two different products.
@@ -339,10 +502,6 @@ The automated test suite follows the end-to-end flow of a user interacting with 
 6. **Additional Test Flow:**
    - Tests for edge cases, such as handling invalid inputs or ensuring system stability under various scenarios.
 
-7. **Bug Reporting and Validation:**
-   - Identifies and reports at least one bug or issue.
-   - Includes a test flow to catch the reported bug, ensuring it doesn't regress.
-
 ### Test Structure
 
 Tests are organized based on features, following the Page Object Model (POM) for better maintainability and scalability.
@@ -359,7 +518,6 @@ src/
 │       ├── login.invalid.test.ts
 │       ├── login.lockout.test.ts
 │       └── login.valid.test.ts
-
 ```
 
 - **Login Tests:** Validate different login scenarios, including valid login, invalid credentials, and account lockout after multiple failed attempts.
@@ -390,7 +548,7 @@ src/
   npx playwright test src/tests/checkout/ --headed
   ```
 
-  This allows you to see the browser actions in real-time.
+  This allows you to see the browser actions in real-time, making it easier to identify where tests might be failing.
 
 - **Use Playwright Trace Viewer:**
 
@@ -398,57 +556,13 @@ src/
   npx playwright show-trace path/to/trace.zip
   ```
 
-  This tool provides a detailed step-by-step execution of your tests.
+  This tool provides a detailed step-by-step execution of your tests, helping you pinpoint the exact moment and cause of failures.
 
 - **Inspect Screenshots and Videos:**
-  Review the artifacts in the `test-results/` directory to identify visual issues during test runs.
 
-## Contributing
+  Review the artifacts in the `test-results/` directory to identify visual issues during test runs. Playwright captures screenshots and videos on test failures, which can be invaluable for debugging.
 
-Contributions are welcome! To contribute to **Nightly Shopping Flow Automation**, follow these steps:
-
-1. **Fork the Repository:**
-   - Click the "Fork" button at the top-right corner of the repository page.
-
-2. **Clone Your Fork:**
-
-   ```bash
-   git clone https://github.com/your-username/nightly-shopping-flow-automation.git
-   cd nightly-shopping-flow-automation
-   ```
-
-3. **Create a New Branch:**
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-4. **Make Your Changes:**
-   - Implement your feature or fix.
-
-5. **Commit Your Changes:**
-
-   ```bash
-   git commit -m "Add feature XYZ"
-   ```
-
-6. **Push to Your Fork:**
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-7. **Create a Pull Request:**
-   - Navigate to your fork on GitHub.
-   - Click the "Compare & pull request" button.
-   - Provide a clear description of your changes and submit the PR.
-
-**Guidelines:**
-
-- **Code Quality:** Ensure your code follows the existing coding standards and is well-documented.
-- **Testing:** Add or update tests as necessary to cover new features or fixes.
-- **Commit Messages:** Use clear and descriptive commit messages.
-- **Respect the Workflow:** Follow the established project structure and practices.
+---
 
 ## License
 
@@ -458,17 +572,8 @@ This project is licensed under the [MIT License](./LICENSE).
 
 For any questions, suggestions, or feedback, please reach out to:
 
-- **Name:** Your Name
-- **Email:** <your-email@example.com>
-- **GitHub:** [your-username](https://github.com/your-username)
-
-## Acknowledgments
-
-- **[Playwright](https://playwright.dev/):** Powerful end-to-end testing framework for web applications.
-- **[Node.js](https://nodejs.org/):** JavaScript runtime environment for building scalable network applications.
-- **[TypeScript](https://www.typescriptlang.org/):** Typed superset of JavaScript that compiles to plain JavaScript.
-- **[GitHub Actions](https://github.com/features/actions):** Automate, customize, and execute software development workflows right in your repository.
+- **Name:** Tal Aharon
+- **Email:** <tal.aharon.work@gmail.com>
+- **GitHub:** [YamtalDev](https://github.com/YamtalDev)
 
 ---
-
-Thank you for using **Nightly Shopping Flow Automation**! If you have any questions or need further assistance, feel free to open an issue or reach out directly.
