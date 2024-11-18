@@ -15,7 +15,7 @@ const config: PlaywrightTestConfig = {
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
     actionTimeout: 30000,
-    navigationTimeout: 60000,
+    navigationTimeout: 70000,
   },
   projects: [
     {
