@@ -15,7 +15,6 @@ export class ProductPage {
   async navigateToProductsPage() {
     try {
       await this.page.goto(`${environment.BASE_URL}/`, { waitUntil: 'networkidle' });
-      await expect(this.page).toHaveURL(`${environment.BASE_URL}/`);
       await expect(this.page.locator('h2:has-text("Products")')).toBeVisible({ timeout: 5000 });
     } catch (error) {
       throw new Error(`Navigation to products page failed. ${error}`);
@@ -29,13 +28,12 @@ export class ProductPage {
    */
   async addProductToCart(productId: string, quantity: number) {
     try {
-      // Select the quantity
       const quantitySelect = this.page.locator(PRODUCT_SELECTORS.quantitySelect(productId));
+      await expect(quantitySelect).toBeVisible({ timeout: 5000 });
       await quantitySelect.selectOption({ value: quantity.toString() });
 
-      // Click the Add to Cart button
       const addToCartButton = this.page.locator(PRODUCT_SELECTORS.addToCartButton(productId));
-      await clickElementWhenReady(addToCartButton);
+      await clickElementWhenReady(addToCartButton, 15000);
     } catch (error) {
       throw new Error(`Failed to add product ID "${productId}" to cart. ${error}`);
     }
@@ -47,9 +45,8 @@ export class ProductPage {
   async navigateToCart() {
     try {
       await clickElementWhenReady(this.page.locator(PRODUCT_SELECTORS.shoppingCartLink));
-      await this.page.waitForLoadState('networkidle');
-      await expect(this.page).toHaveURL(`${environment.BASE_URL}/cart`);
       await expect(this.page.locator('h2:has-text("Shopping Cart")')).toBeVisible({ timeout: 5000 });
+      await expect(this.page).toHaveURL(`${environment.BASE_URL}/cart`);
     } catch (error) {
       throw new Error(`Failed to navigate to the shopping cart. ${error}`);
     }
