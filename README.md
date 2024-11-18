@@ -17,7 +17,7 @@
 6. [Available Scripts](#available-scripts)
     - [Test Scripts](#test-scripts)
     - [Build and Clean Scripts](#build-and-clean-scripts)
-    - [Documentation and Linting Scripts](#documentation-and-linting-scripts)
+    - [Linting Scripts](#linting-scripts)
 7. [Project Structure](#project-structure)
 8. [Running the Tests](#running-the-tests)
     - [Running Tests Locally](#running-tests-locally)
@@ -166,15 +166,7 @@ The project includes several npm scripts to facilitate various tasks such as tes
   npm run clean
   ```
 
-### Documentation and Linting Scripts
-
-- **`npm run docs`**
-
-  Generates project documentation using TypeDoc and outputs it to the `docs` directory. This helps in maintaining up-to-date documentation based on the codebase.
-
-  ```bash
-  npm run docs
-  ```
+### Linting Scripts
 
 - **`npm run lint`**
 

@@ -10,7 +10,7 @@ test.describe('Checkout Process Test', () => {
 	}) => {
 		const shippingAddress = '123 Main Street, Anytown';
 
-		const productsToAdd = productCombinations[0].products; // Using the first product combination
+		const productsToAdd = productCombinations[0].products;
 		await productPage.navigateToProductsPage();
 		for (const product of productsToAdd) {
 			await productPage.addProductToCart(product.id, product.quantity);
